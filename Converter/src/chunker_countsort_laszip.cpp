@@ -6,6 +6,7 @@
 #include <mutex>
 #include <memory>
 #include <atomic>
+#include <cfloat>
 
 #include "chunker_countsort_laszip.h"
 
@@ -213,6 +214,9 @@ namespace chunker_countsort_laszip {
 			auto posScale = outputAttributes.posScale;
 			auto posOffset = outputAttributes.posOffset;
 
+			double minSizeToleration = 0.0 - DBL_EPSILON;
+			double maxSizeToleration = 1.0 + DBL_EPSILON;
+
 			for (int i = 0; i < numToRead; i++) {
 				int64_t pointOffset = i * bpp;
 
@@ -233,8 +237,8 @@ namespace chunker_countsort_laszip {
 					double uy = (double(Y) * posScale.y + posOffset.y - min.y) / size.y;
 					double uz = (double(Z) * posScale.z + posOffset.z - min.z) / size.z;
 
-					bool inBox = ux >= 0.0 && uy >= 0.0 && uz >= 0.0;
-					inBox = inBox && ux <= 1.0 && uy <= 1.0 && uz <= 1.0;
+					bool inBox = ux >= minSizeToleration && uy >= minSizeToleration && uz >= minSizeToleration;
+					inBox = inBox && ux <= maxSizeToleration && uy <= maxSizeToleration && uz <= maxSizeToleration;
 
 					if (!inBox) {
 						stringstream ss;
