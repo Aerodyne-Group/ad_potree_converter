@@ -247,6 +247,8 @@ namespace chunker_countsort_laszip {
 						ss << "box.max: " << max.toString() << endl;
 						ss << "point: " << Vector3(x, y, z).toString() << endl;
 						ss << "file: " << path << endl;
+						ss << "rel_location: " << Vector3(ux, uy, uz).toString() << endl; 
+						ss << "accept_bounds:" << minSizeToleration << " > " << maxSizeToleration << endl;
 						ss << "PotreeConverter requires a valid bounding box to operate." << endl;
 						ss << "Please try to repair the bounding box, e.g. using lasinfo with the -repair_bb argument." << endl;
 						logger::ERROR(ss.str());
